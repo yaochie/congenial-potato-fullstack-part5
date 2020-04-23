@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,18 +12,22 @@ const LoginForm = ({ setUser }) => {
       const user = await loginService.login({ username, password })
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
-      setUser(user)
+      setNotification(null)
       blogService.setToken(user.token)
       setUsername('')
       setPassword('')
+      setUser(user)
     } catch(exception) {
-      console.error('invalid credentials')
+      setNotification({
+        text: 'invalid credentials',
+        type: 'error'
+      })
+
+      setTimeout(() => setNotification(null), 3000)
     }
   }
 
   return (
-    <>
-    <h2>log in to application</h2>
     <form onSubmit={handleLogin}>
       <div>
         username:
@@ -45,7 +49,6 @@ const LoginForm = ({ setUser }) => {
       </div>
       <button type='submit'>login</button>
     </form>
-    </>
   )
 }
 
