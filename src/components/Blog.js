@@ -45,7 +45,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} - {blog.author}
+      <div className="basic-info">{blog.title} - {blog.author}</div>
       <button onClick={toggleDetails}>
         {showDetails ? 'hide details' : 'show details'}
       </button>
