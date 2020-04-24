@@ -71,6 +71,25 @@ const App = () => {
     </div>
   )
 
+  const addLike = async blogObject => {
+    const updatedBlog = {
+      user: blogObject.user.id,
+      title: blogObject.title,
+      author: blogObject.author,
+      url: blogObject.url,
+      likes: blogObject.likes + 1
+    }
+
+    const response = await blogService.update(updatedBlog, blogObject.id)
+
+    const newObject = {
+      ...blogObject,
+      likes: response.likes
+    }
+
+    setBlogs(blogs.map(blog => blog.id === blogObject.id ? newObject : blog))
+  }
+
   if (user === null) {
     return loginForm()
   }
@@ -87,7 +106,7 @@ const App = () => {
       {blogForm()}
       <br />
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} />
       )}
     </div>
   )
