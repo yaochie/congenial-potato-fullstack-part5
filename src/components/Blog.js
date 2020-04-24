@@ -22,7 +22,7 @@ const Blog = ({ blog, addLike, deleteBlog, user }) => {
   }
 
   const details = () => (
-    <div>
+    <div className="extra-info">
       <div>{blog.url}</div>
       <div>
         likes {blog.likes} <button onClick={handleLike}>like</button>
