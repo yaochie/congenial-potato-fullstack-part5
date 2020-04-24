@@ -90,6 +90,8 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id === blogObject.id ? newObject : blog))
   }
 
+  const sortByLikes = (a, b) => a.likes < b.likes
+
   if (user === null) {
     return loginForm()
   }
@@ -105,7 +107,7 @@ const App = () => {
       <br />
       {blogForm()}
       <br />
-      {blogs.map(blog =>
+      {blogs.sort(sortByLikes).map(blog =>
         <Blog key={blog.id} blog={blog} addLike={addLike} />
       )}
     </div>
