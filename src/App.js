@@ -43,6 +43,12 @@ const App = () => {
 
     const response = await blogService.create(blogObject)
 
+    setNotification({
+      text: `Added new blog: ${response.title} by ${response.author}`,
+      type: 'success'
+    })
+    setTimeout(() => setNotification(null), 3000)
+
     // add other user details
     const updatedResponse = {
       ...response,
@@ -64,10 +70,7 @@ const App = () => {
       ref={blogFormRef}
       hideLabel="cancel"
     >
-      <BlogForm
-        addBlog={addBlog}
-        setNotification={setNotification}
-      />
+      <BlogForm addBlog={addBlog} />
     </Togglable>
   )
 

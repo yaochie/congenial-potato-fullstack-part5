@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const BlogForm = ({ addBlog, setNotification }) => {
+const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -15,27 +16,22 @@ const BlogForm = ({ addBlog, setNotification }) => {
     }
 
     // add blog to blog list
-    const newBlog = await addBlog(blogObject)
+    await addBlog(blogObject)
 
     setTitle('')
     setAuthor('')
     setUrl('')
-
-    setNotification({
-      text: `Added new blog: ${newBlog.title} by ${newBlog.author}`,
-      type: 'success'
-    })
-    setTimeout(() => setNotification(null), 3000)
   }
 
   return (
-    <form onSubmit={handleCreation}>
+    <form onSubmit={handleCreation} className="formDiv">
       <div>
         title:
         <input
           type='text'
           value={title}
           name='Title'
+          id='title'
           onChange={({ target }) => setTitle(target.value)}
         />
       </div>
@@ -45,6 +41,7 @@ const BlogForm = ({ addBlog, setNotification }) => {
           type='text'
           value={author}
           name='Author'
+          id='author'
           onChange={({ target }) => setAuthor(target.value)}
         />
       </div>
@@ -54,12 +51,17 @@ const BlogForm = ({ addBlog, setNotification }) => {
           type='text'
           value={url}
           name='URL'
+          id='url'
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
       <button type='submit'>create</button>
     </form>
   )
+}
+
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm
