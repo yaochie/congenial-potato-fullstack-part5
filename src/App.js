@@ -42,7 +42,18 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
 
     const response = await blogService.create(blogObject)
-    setBlogs(blogs.concat(response))
+
+    // add other user details
+    const updatedResponse = {
+      ...response,
+      user: {
+        id: response.user,
+        username: user.username,
+        name: user.name
+      }
+    }
+
+    setBlogs(blogs.concat(updatedResponse))
 
     return response
   }
@@ -90,7 +101,24 @@ const App = () => {
     setBlogs(blogs.map(blog => blog.id === blogObject.id ? newObject : blog))
   }
 
+  const deleteBlog = async blogObject => {
+    if (window.confirm(`Are you sure you want to delete ${blogObject.title} - ${blogObject.author}?`)) {
+      await blogService.deleteBlog(blogObject.id)
+      setBlogs(blogs.filter(blog => blog.id !== blogObject.id))
+    }
+  }
+
   const sortByLikes = (a, b) => a.likes < b.likes
+
+  const blogEntry = blog => (
+    <Blog
+      key={blog.id}
+      blog={blog}
+      addLike={addLike}
+      deleteBlog={deleteBlog}
+      user={user}
+    />
+  )
 
   if (user === null) {
     return loginForm()
@@ -107,9 +135,7 @@ const App = () => {
       <br />
       {blogForm()}
       <br />
-      {blogs.sort(sortByLikes).map(blog =>
-        <Blog key={blog.id} blog={blog} addLike={addLike} />
-      )}
+      {blogs.sort(sortByLikes).map(blog => blogEntry(blog))}
     </div>
   )
 }

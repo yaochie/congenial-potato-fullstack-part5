@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, deleteBlog, user }) => {
+  const [showDetails, setShowDetails] = useState(false)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -9,12 +11,14 @@ const Blog = ({ blog, addLike }) => {
     marginBottom: 5,
   }
 
-  const [showDetails, setShowDetails] = useState(false)
-
   const name = blog.user === undefined ? '' : blog.user.name
 
   const handleLike = async () => {
     await addLike(blog)
+  }
+
+  const handleDelete = async () => {
+    await deleteBlog(blog)
   }
 
   const details = () => (
@@ -31,6 +35,14 @@ const Blog = ({ blog, addLike }) => {
     setShowDetails(!showDetails)
   }
 
+  const deleteButton = () => {
+    if (blog.user !== undefined && user.username === blog.user.username) {
+      return <button onClick={handleDelete}>remove</button>
+    } else {
+      return null
+    }
+  }
+
   return (
     <div style={blogStyle}>
       {blog.title} - {blog.author}
@@ -38,6 +50,7 @@ const Blog = ({ blog, addLike }) => {
         {showDetails ? 'hide details' : 'show details'}
       </button>
       {showDetails ? details() : null}
+      {deleteButton()}
     </div>
   )
 }
