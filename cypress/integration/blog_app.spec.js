@@ -57,6 +57,23 @@ describe('Blog app', function() {
 
       cy.contains('Added new blog: My First Blog by The Author')
       cy.contains('My First Blog - The Author')
+
+      cy.contains('show details').click()
+      cy.contains('likes 0')
+      cy.contains('mysite.com')
+    })
+
+    it('A blog can be created and liked', function() {
+      cy.contains('new blog').click()
+
+      cy.get('input#title').type('My First Blog')
+      cy.get('input#author').type('The Author')
+      cy.get('input#url').type('mysite.com')
+      cy.contains('create').click()
+
+      cy.contains('show details').click()
+      cy.contains('like').click()
+      cy.contains('likes 1')
     })
   })
 })
