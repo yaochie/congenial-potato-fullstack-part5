@@ -46,11 +46,9 @@ describe('Blog app', function() {
     })
   })
 
-  describe.only('When logged in', function() {
+  describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('input#username').type('user1')
-      cy.get('input#password').type('user1password')
-      cy.get('button#login-button').click()
+      cy.login({ username: 'user1', password: 'user1password' })
     })
 
     it('A blog can be created', function() {
@@ -71,12 +69,11 @@ describe('Blog app', function() {
 
     describe('and a blog is created', function() {
       beforeEach(function() {
-        cy.contains('new blog').click()
-
-        cy.get('input#title').type('My First Blog')
-        cy.get('input#author').type('The Author')
-        cy.get('input#url').type('mysite.com')
-        cy.contains('create').click()
+        cy.createBlog({
+          title: 'My First Blog',
+          author: 'The Author',
+          url: 'mysite.com'
+        })
       })
 
       it('A blog can be created and liked', function() {
@@ -87,10 +84,10 @@ describe('Blog app', function() {
 
       it('A blog can be deleted by the creating user', function() {
         cy.contains('remove').click()
-        cy.get('div.blog').contains('My First Blog').should('not.exist')
+        cy.get('div.blog').should('not.exist')
       })
 
-      it.only('A blog cannot be deleted by a different user', function() {
+      it('A blog cannot be deleted by a different user', function() {
         cy.contains('Logout').click()
 
         cy.get('input#username').type('user2')
@@ -98,6 +95,55 @@ describe('Blog app', function() {
         cy.get('button#login-button').click()
 
         cy.contains('remove').should('not.exist')
+      })
+    })
+
+    describe('blogs are sorted by likes', function() {
+      beforeEach(() => {
+        cy.createBlog({
+          title: 'My First Blog',
+          author: 'The Author',
+          url: 'mysite.com'
+        })
+        cy.createBlog({
+          title: 'My Second Blog',
+          author: 'The Author',
+          url: 'mysite.com'
+        })
+        cy.createBlog({
+          title: 'My Third Blog',
+          author: 'The Author',
+          url: 'mysite.com'
+        })
+      })
+
+      it('sorted', function() {
+        cy.get('div.blog')
+          .contains('My First Blog').parent()
+          .contains('show details').click()
+
+        cy.get('div.blog')
+          .contains('My First Blog').parent()
+          .get('button.like-button').click()
+
+        cy.get('div.blog')
+          .contains('My Third Blog').parent()
+          .contains('show details').click()
+
+        cy.get('div.blog')
+          .contains('My Third Blog').parent()
+          .find('button.like-button').as('likeButton')
+
+        cy.get('@likeButton').click()
+        cy.get('@likeButton').click()
+        cy.get('@likeButton').click()
+
+        // check that the blogs are in the order we expect
+        cy.get('div.blog').then(blogs => {
+          expect(blogs[0]).to.contain('My Third Blog')
+          expect(blogs[1]).to.contain('My First Blog')
+          expect(blogs[2]).to.contain('My Second Blog')
+        })
       })
     })
   })
