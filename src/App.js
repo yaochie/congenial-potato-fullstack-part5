@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
@@ -8,10 +9,12 @@ import Togglable from './components/Togglable'
 
 import blogService from './services/blogs'
 
+import { setNotification } from './reducers/notificationReducer'
+
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
 
   const blogFormRef = React.createRef()
 
@@ -43,11 +46,10 @@ const App = () => {
 
     const response = await blogService.create(blogObject)
 
-    setNotification({
+    dispatch(setNotification({
       text: `Added new blog: ${response.title} by ${response.author}`,
       type: 'success'
-    })
-    setTimeout(() => setNotification(null), 3000)
+    }, 3))
 
     // add other user details
     const updatedResponse = {
@@ -77,11 +79,8 @@ const App = () => {
   const loginForm = () => (
     <div>
       <h2>log in to application</h2>
-      <Notification message={notification} />
-      <LoginForm
-        setUser={setUser}
-        setNotification={setNotification}
-      />
+      <Notification />
+      <LoginForm setUser={setUser} />
     </div>
   )
 
@@ -130,7 +129,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={notification} />
+      <Notification />
       <div>
         {user.name} logged in
         <button onClick={handleLogout}>Logout</button>
