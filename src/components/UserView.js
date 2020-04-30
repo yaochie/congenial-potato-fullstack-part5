@@ -1,21 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  BrowserRouter as Router,
+  Link
+} from 'react-router-dom'
 
 import userService from '../services/users'
 
+import { initializeUsers } from '../reducers/userReducer'
+
 const UserView = () => {
-  const [users, setUsers] = useState([])
+  const dispatch = useDispatch()
+  const users = useSelector(state => state.users)
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await userService.getUserInfo()
-      setUsers(users)
-    }
-    fetchUsers()
-  }, [])
+    dispatch(initializeUsers())
+  }, [dispatch])
 
   const userEntry = user => (
     <tr key={user.id}>
-      <td>{user.name}</td>
+      <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
       <td>{user.blogs.length}</td>
     </tr>
   )

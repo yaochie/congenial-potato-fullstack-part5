@@ -11,6 +11,7 @@ import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import UserView from './components/UserView'
+import SingleUserView from './components/SingleUserView'
 
 import { setNotification } from './reducers/notificationReducer'
 import { createBlog } from './reducers/blogReducer'
@@ -81,6 +82,9 @@ const App = () => {
         </div>
       </div>
       <Switch>
+        <Route path='/users/:id'>
+          <SingleUserView />
+        </Route>
         <Route path='/users'>
           <UserView />
         </Route>
