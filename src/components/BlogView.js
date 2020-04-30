@@ -1,36 +1,50 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, useHistory, Link } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
-import { likeBlog, addComment } from '../reducers/blogReducer'
+import { deleteBlog, likeBlog, addComment } from '../reducers/blogReducer'
 
 const CommentForm = ({ blogId }) => {
   const dispatch = useDispatch()
   const [comment, setComment] = useState('')
 
-  const handleSubmitComment = (event) => {
+  const submitComment = (event) => {
     event.preventDefault()
+    console.log('comment', comment)
 
     dispatch(addComment({ comment: comment }, blogId))
+    setComment('')
   }
 
   return (
-    <form onSubmit={handleSubmitComment}>
-      <input
-        type='text'
-        name='comment'
-        value={comment}
-        onChange={({ target }) => setComment(target.value)}
-      />
-      <button>add comment</button>
-    </form>
+    <Form onSubmit={submitComment}>
+      <Row>
+        <Col>
+          <Form.Control
+            type='text'
+            name='comment'
+            value={comment}
+            onChange={({ target }) => setComment(target.value)}
+          />
+        </Col>
+        <Col>
+          <Button type='submit'>add comment</Button>
+        </Col>
+      </Row>
+    </Form>
   )
 }
 
 const BlogView = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const id = useParams().id
   const blog = useSelector(state => state.blogs.find(blog => blog.id === id))
+  const user = useSelector(state => state.user)
 
   if (!blog) {
     return (
@@ -56,6 +70,21 @@ const BlogView = () => {
     dispatch(likeBlog(updatedBlog, blogObject.id))
   }
 
+  const removeBlog = blogObject => {
+    if (window.confirm(`Are you sure you want to delete ${blogObject.title} - ${blogObject.author}?`)) {
+      dispatch(deleteBlog(blogObject.id))
+      history.push('/')
+    }
+  }
+
+  const deleteButton = () => {
+    if (blog.user !== undefined && user.username === blog.user.username) {
+      return <Button onClick={() => removeBlog(blog)}>remove</Button>
+    } else {
+      return null
+    }
+  }
+
   const name = blog.user === undefined ? 'unknown' : blog.user.name
 
   return (
@@ -64,10 +93,10 @@ const BlogView = () => {
       <div>
         <div><a href={blog.url}>{blog.url}</a></div>
         <div>
-          likes {blog.likes}
-          <button onClick={() => addLike(blog)} className="like-button">
+          likes {blog.likes}&nbsp;
+          <Button onClick={() => addLike(blog)} className="like-button">
             like
-          </button>
+          </Button>
         </div>
         <div>added by {name}</div>
       </div>
@@ -78,6 +107,7 @@ const BlogView = () => {
           {blog.comments.map((c, i) => <li key={i}>{c}</li>)}
         </ul>
       </div>
+      {deleteButton()}
       <div>
         <Link to='/'>back to main page</Link>
       </div>

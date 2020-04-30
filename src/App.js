@@ -4,7 +4,7 @@ import {
   Switch, Route, Link
 } from 'react-router-dom'
 
-import { Form, Navbar, Nav, Button } from 'react-bootstrap'
+import { Navbar, Nav, Button } from 'react-bootstrap'
 
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
@@ -67,9 +67,7 @@ const App = () => {
     <div>
       {blogForm()}
       <br />
-      <BlogList
-        user={user}
-      />
+      <BlogList />
     </div>
   )
 
@@ -84,22 +82,24 @@ const App = () => {
   return (
     <div className='container'>
       <Navbar bg='dark' variant='dark' sticky='top'>
-        <Nav>
-          <Nav.Link href='#'>
+        <Nav className='mr-auto'>
+          <Nav.Link as='span'>
             <Link style={padding} to='/'>blogs</Link>
           </Nav.Link>
-          <Nav.Link href='#'>
+          <Nav.Link as='span'>
             <Link style={padding} to='/users'>users</Link>
           </Nav.Link>
         </Nav>
 
-        <Navbar.Text>
-          {user.name} logged in&nbsp;
-          <Button onClick={handleLogout}>Logout</Button>
-        </Navbar.Text>
+        <Nav>
+          <Navbar.Text>
+            {user.name} logged in&nbsp;
+            <Button onClick={handleLogout}>Logout</Button>
+          </Navbar.Text>
+        </Nav>
       </Navbar>
       <div>
-        <h2>blogs</h2>
+        <h1>blogs</h1>
         <Notification />
       </div>
       <Switch>

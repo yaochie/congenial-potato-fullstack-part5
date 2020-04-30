@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Link
-} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Table from 'react-bootstrap/Table'
 
 import { initializeUsers } from '../reducers/userReducer'

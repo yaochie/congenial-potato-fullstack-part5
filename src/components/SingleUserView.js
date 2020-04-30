@@ -24,6 +24,7 @@ const SingleUserView = () => {
           {user.blogs.map(blog => <li key={blog.id}>{blog.title}</li>)}
         </ul>
       </div>
+      <div><Link to='/users'>Return to main user page</Link></div>
     </div>
   )
 }
