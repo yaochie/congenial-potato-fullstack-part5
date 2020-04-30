@@ -33,7 +33,6 @@ const BlogView = () => {
     dispatch(likeBlog(updatedBlog, blogObject.id))
   }
 
-
   const name = blog.user === undefined ? 'unknown' : blog.user.name
 
   return (
@@ -48,6 +47,12 @@ const BlogView = () => {
           </button>
         </div>
         <div>added by {name}</div>
+      </div>
+      <div>
+        Comments:
+        <ul>
+          {blog.comments.map((c, i) => <li key={i}>{c}</li>)}
+        </ul>
       </div>
       <div>
         <Link to='/'>back to main page</Link>
