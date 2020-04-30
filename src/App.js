@@ -72,19 +72,26 @@ const App = () => {
     </div>
   )
 
+  const padding = {
+    padding: 5
+  }
+
   if (user === null) {
     return <LoginForm />
   }
 
   return (
     <Router>
+      <div className='nav-bar'>
+        <Link style={padding} to='/'>blogs</Link>
+        <Link style={padding} to='/users'>users</Link>
+
+        {user.name} logged in
+        <button onClick={handleLogout}>Logout</button>
+      </div>
       <div>
         <h2>blogs</h2>
         <Notification />
-        <div>
-          {user.name} logged in
-          <button onClick={handleLogout}>Logout</button>
-        </div>
       </div>
       <Switch>
         <Route path='/users/:id'>
