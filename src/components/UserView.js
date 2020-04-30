@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Link
 } from 'react-router-dom'
+import Table from 'react-bootstrap/Table'
 
 import { initializeUsers } from '../reducers/userReducer'
 
@@ -25,17 +26,17 @@ const UserView = () => {
   return (
     <div>
       <h2>Users</h2>
-      <table>
+      <Table bordered hover size="sm">
         <thead>
           <tr>
-            <th />
+            <th>User</th>
             <th>blogs created</th>
           </tr>
         </thead>
         <tbody>
           {users.map(user => userEntry(user))}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

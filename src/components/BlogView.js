@@ -4,8 +4,6 @@ import { useParams, Link } from 'react-router-dom'
 
 import { likeBlog, addComment } from '../reducers/blogReducer'
 
-import blogService from '../services/blogs'
-
 const CommentForm = ({ blogId }) => {
   const dispatch = useDispatch()
   const [comment, setComment] = useState('')

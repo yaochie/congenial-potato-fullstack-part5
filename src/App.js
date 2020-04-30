@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  BrowserRouter as Router,
   Switch, Route, Link
 } from 'react-router-dom'
+
+import { Form, Navbar, Nav, Button } from 'react-bootstrap'
 
 import BlogList from './components/BlogList'
 import LoginForm from './components/LoginForm'
@@ -81,14 +82,22 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <div className='nav-bar'>
-        <Link style={padding} to='/'>blogs</Link>
-        <Link style={padding} to='/users'>users</Link>
+    <div className='container'>
+      <Navbar bg='dark' variant='dark' sticky='top'>
+        <Nav>
+          <Nav.Link href='#'>
+            <Link style={padding} to='/'>blogs</Link>
+          </Nav.Link>
+          <Nav.Link href='#'>
+            <Link style={padding} to='/users'>users</Link>
+          </Nav.Link>
+        </Nav>
 
-        {user.name} logged in
-        <button onClick={handleLogout}>Logout</button>
-      </div>
+        <Navbar.Text>
+          {user.name} logged in&nbsp;
+          <Button onClick={handleLogout}>Logout</Button>
+        </Navbar.Text>
+      </Navbar>
       <div>
         <h2>blogs</h2>
         <Notification />
@@ -107,7 +116,7 @@ const App = () => {
           {blogs()}
         </Route>
       </Switch>
-    </Router>
+    </div>
   )
 }
 

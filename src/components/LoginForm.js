@@ -8,6 +8,9 @@ import Notification from './Notification'
 import { setNotification } from '../reducers/notificationReducer'
 import { login } from '../reducers/loginReducer'
 
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+
 const LoginForm = () => {
   const dispatch = useDispatch()
 
@@ -37,25 +40,25 @@ const LoginForm = () => {
     <div>
       <h2>log in to application</h2>
       <Notification />
-      <form onSubmit={handleLogin} id='login-form'>
-        <div>
-          username:
-          <input
+      <Form onSubmit={handleLogin} id='login-form'>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
             type='text'
             name='username'
             id='username'
           />
-        </div>
-        <div>
-          password:
-          <input
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>password:</Form.Label>
+          <Form.Control
             type='password'
             name='password'
             id='password'
           />
-        </div>
-        <button type='submit' id='login-button'>login</button>
-      </form>
+        </Form.Group>
+        <Button type='submit' id='login-button'>login</Button>
+      </Form>
     </div>
   )
 }
