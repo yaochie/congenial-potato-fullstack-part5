@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import loginService from '../services/login'
-import blogService from '../services/blogs'
 
 import Notification from './Notification'
 
 import { setNotification } from '../reducers/notificationReducer'
+import { login } from '../reducers/loginReducer'
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
   const dispatch = useDispatch()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
-  const handleLogin = async (event) => {
+  const handleLogin = async event => {
     event.preventDefault()
+
+    const username = event.target.username.value
+    const password = event.target.password.value
+
+    event.target.username.value = ''
+    event.target.password.value = ''
+
     try {
       const user = await loginService.login({ username, password })
-
       window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      dispatch(login(user))
       dispatch(setNotification(null))
-      blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
-      setUser(user)
     } catch(exception) {
       dispatch(setNotification({
         text: 'invalid credentials',
@@ -42,30 +42,22 @@ const LoginForm = ({ setUser }) => {
           username:
           <input
             type='text'
-            value={username}
-            name='Username'
+            name='username'
             id='username'
-            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
           password:
           <input
             type='password'
-            value={password}
-            name='Password'
+            name='password'
             id='password'
-            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
         <button type='submit' id='login-button'>login</button>
       </form>
     </div>
   )
-}
-
-LoginForm.propTypes = {
-  setUser: PropTypes.func.isRequired
 }
 
 export default LoginForm
