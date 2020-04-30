@@ -5,8 +5,6 @@ import {
   Link
 } from 'react-router-dom'
 
-import userService from '../services/users'
-
 import { initializeUsers } from '../reducers/userReducer'
 
 const UserView = () => {

@@ -12,9 +12,10 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import UserView from './components/UserView'
 import SingleUserView from './components/SingleUserView'
+import BlogView from './components/BlogView'
 
 import { setNotification } from './reducers/notificationReducer'
-import { createBlog } from './reducers/blogReducer'
+import { createBlog, initializeBlogs } from './reducers/blogReducer'
 import { login, logout } from './reducers/loginReducer'
 
 const App = () => {
@@ -29,6 +30,10 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       dispatch(login(user))
     }
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
   }, [dispatch])
 
   const handleLogout = () => {
@@ -87,6 +92,9 @@ const App = () => {
         </Route>
         <Route path='/users'>
           <UserView />
+        </Route>
+        <Route path='/blogs/:id'>
+          <BlogView />
         </Route>
         <Route path='/'>
           {blogs()}

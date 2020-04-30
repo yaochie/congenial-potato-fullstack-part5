@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-
-import userService from '../services/users'
-
-import { initializeUsers } from '../reducers/userReducer'
+import React from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const SingleUserView = () => {
   const id = useParams().id
-  const dispatch = useDispatch()
   const user = useSelector(state => state.users.find(user => user.id === id))
-
-  console.log(id, user)
 
   if (!user) {
     return (
-      <div>User not found.</div>
+      <>
+        <div>User not found.</div>
+        <div><Link to='/users'>Return to main user page</Link></div>
+      </>
     )
   }
 
