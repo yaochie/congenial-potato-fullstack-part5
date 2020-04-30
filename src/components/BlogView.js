@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 
-import { likeBlog } from '../reducers/blogReducer'
+import { likeBlog, addComment } from '../reducers/blogReducer'
+
+import blogService from '../services/blogs'
+
+const CommentForm = ({ blogId }) => {
+  const dispatch = useDispatch()
+  const [comment, setComment] = useState('')
+
+  const handleSubmitComment = (event) => {
+    event.preventDefault()
+
+    dispatch(addComment({ comment: comment }, blogId))
+  }
+
+  return (
+    <form onSubmit={handleSubmitComment}>
+      <input
+        type='text'
+        name='comment'
+        value={comment}
+        onChange={({ target }) => setComment(target.value)}
+      />
+      <button>add comment</button>
+    </form>
+  )
+}
 
 const BlogView = () => {
   const dispatch = useDispatch()
@@ -50,6 +75,7 @@ const BlogView = () => {
       </div>
       <div>
         Comments:
+        <CommentForm blogId={blog.id} />
         <ul>
           {blog.comments.map((c, i) => <li key={i}>{c}</li>)}
         </ul>
