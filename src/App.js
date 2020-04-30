@@ -57,14 +57,6 @@ const App = () => {
     </Togglable>
   )
 
-  const loginForm = () => (
-    <div>
-      <h2>log in to application</h2>
-      <Notification />
-      <LoginForm setUser={setUser} />
-    </div>
-  )
-
   const addLike = blogObject => {
     const updatedBlog = {
       user: blogObject.user.id,
@@ -84,7 +76,7 @@ const App = () => {
   }
 
   if (user === null) {
-    return loginForm()
+    return <LoginForm setUser={setUser} />
   }
 
   return (

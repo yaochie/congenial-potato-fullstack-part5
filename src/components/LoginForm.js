@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
+import Notification from './Notification'
+
 import { setNotification } from '../reducers/notificationReducer'
 
 const LoginForm = ({ setUser }) => {
@@ -32,29 +34,33 @@ const LoginForm = ({ setUser }) => {
   }
 
   return (
-    <form onSubmit={handleLogin} id='login-form'>
-      <div>
-        username:
-        <input
-          type='text'
-          value={username}
-          name='Username'
-          id='username'
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password:
-        <input
-          type='password'
-          value={password}
-          name='Password'
-          id='password'
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type='submit' id='login-button'>login</button>
-    </form>
+    <div>
+      <h2>log in to application</h2>
+      <Notification />
+      <form onSubmit={handleLogin} id='login-form'>
+        <div>
+          username:
+          <input
+            type='text'
+            value={username}
+            name='Username'
+            id='username'
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password:
+          <input
+            type='password'
+            value={password}
+            name='Password'
+            id='password'
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type='submit' id='login-button'>login</button>
+      </form>
+    </div>
   )
 }
 

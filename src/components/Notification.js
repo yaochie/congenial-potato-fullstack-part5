@@ -2,15 +2,15 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const notification = useSelector(state => state.notification)
+  const message = useSelector(state => state.notification.message)
 
-  if (notification === null) {
+  if (message === null) {
     return null
   }
 
   return (
-    <div className={notification.message.type}>
-      {notification.message.text}
+    <div className={message.type}>
+      {message.text}
     </div>
   )
 }
