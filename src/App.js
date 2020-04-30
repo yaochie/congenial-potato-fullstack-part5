@@ -8,7 +8,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 import { setNotification } from './reducers/notificationReducer'
-import { initializeBlogs, createBlog, deleteBlog, likeBlog } from './reducers/blogReducer'
+import { createBlog } from './reducers/blogReducer'
 import { login, logout } from './reducers/loginReducer'
 
 const App = () => {
@@ -16,10 +16,6 @@ const App = () => {
   const user = useSelector(state => state.user)
 
   const blogFormRef = React.createRef()
-
-  useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInUser')
@@ -55,24 +51,6 @@ const App = () => {
     </Togglable>
   )
 
-  const addLike = blogObject => {
-    const updatedBlog = {
-      user: blogObject.user.id,
-      title: blogObject.title,
-      author: blogObject.author,
-      url: blogObject.url,
-      likes: blogObject.likes + 1
-    }
-
-    dispatch(likeBlog(updatedBlog, blogObject.id))
-  }
-
-  const handleDeleteBlog = async blogObject => {
-    if (window.confirm(`Are you sure you want to delete ${blogObject.title} - ${blogObject.author}?`)) {
-      dispatch(deleteBlog(blogObject.id))
-    }
-  }
-
   if (user === null) {
     return <LoginForm />
   }
@@ -89,8 +67,6 @@ const App = () => {
       {blogForm()}
       <br />
       <BlogList
-        addLike={addLike}
-        deleteBlog={handleDeleteBlog}
         user={user}
       />
     </div>

@@ -50,7 +50,6 @@ export const createBlog = (blogObject, user) => {
 export const initializeBlogs = () => {
   return async dispatch => {
     const data = await blogService.getAll()
-    console.log(data)
     dispatch({
       type: 'INIT_BLOGS',
       data
