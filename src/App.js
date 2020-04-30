@@ -76,7 +76,7 @@ const App = () => {
   }
 
   if (user === null) {
-    return <LoginForm />
+    return <div className='container'><LoginForm /></div>
   }
 
   return (
